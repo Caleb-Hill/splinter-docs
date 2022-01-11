@@ -34,13 +34,13 @@ version: v1
 args:
     - name: ADMIN_KEYS
       required: false
-      default: $(SIGNER_PUB_KEY)
+      default: $(signer_pub_key)
       description: >-
         Public keys used to verify transactions in the scabbard service
     - name: NODES
       required: true
       description: "List of node IDs"
-    - name: SIGNER_PUB_KEY
+    - name: signer_pub_key
       required: false
       description: "Public key of the signer"
     - name: GAMEROOM_NAME
@@ -53,9 +53,9 @@ rules:
         service-type: 'scabbard'
         service-args:
         - key: 'admin_keys'
-          value: [$(ADMIN_KEYS)]
+          value: [$(admin_keys)]
         - key: 'peer_services'
-          value: '$(ALL_OTHER_SERVICES)'
+          value: '$(all_other_services)'
         - key: 'version'
           value: '2'
         first-service: 'a000'
@@ -63,9 +63,9 @@ rules:
         encoding: json
         metadata:
             - key: "scabbard_admin_keys"
-              value: ["$(ADMIN_KEYS)"]
+              value: ["$(admin_keys)"]
             - key: "alias"
-              value: "$(GAMEROOM_NAME)"
+              value: "$(gameroom_name)"
 ```
 
 There are three main sections in a circuit template: `version`, `args`, and
@@ -85,28 +85,28 @@ define the `name`, The following argument definition is from the example YAML
 above:
 
 ```yaml
-- name: SIGNER_PUB_KEY
+- name: signer_pub_key
   required: false
   description: "Public key of the signer"
 ```
 
-This shows the definition of the `SIGNER_PUB_KEY` argument, which includes a
+This shows the definition of the `signer_pub_key` argument, which includes a
 short description string and an indicator of whether or not the argument is
 required. This argument will be assigned a value when the circuit is being
 created.
 
 The value of an argument may be used to fill in other necessary information
 within the template. The value of an argument can be referred to using the
-command substitution syntax, for example the `SIGNER_PUB_KEY` argument would
-appear as `$(SIGNER_PUB_KEY)`. This syntax may be used when assigning the
+command substitution syntax, for example the `signer_pub_key` argument would
+appear as `$(signer_pub_key)`. This syntax may be used when assigning the
 `default` value of an argument. The following shows the definition of the
-`ADMIN_KEYS` argument which uses the `SIGNER_PUB_KEY` argument as its default
+`admin_keys` argument which uses the `signer_pub_key` argument as its default
 value.
 
 ```yaml
-- name: ADMIN_KEYS
+- name: admin_keys
   required: false
-  default: $(SIGNER_PUB_KEY)
+  default: $(signer_pub_key)
   description: >-
     Public keys used to verify transactions in the scabbard service
 ```
@@ -138,18 +138,18 @@ set-metadata:
       encoding: json
       metadata:
           - key: "scabbard_admin_keys"
-            value: ["$(ADMIN_KEYS)"]
+            value: ["$(admin_keys)"]
           - key: "alias"
-            value: "$(GAMEROOM_NAME)"
+            value: "$(gameroom_name)"
 ```
 
 This rule is associated with a function used to set the `metadata` field of the
 `CreateCircuitBuilder`. The rule’s options allow for specifying the details
 necessary for the function associated with the template rule to assign that
-builder value. The `scabbard_admin_keys` key’s value is `[“$(ADMIN_KEYS)”]`,
-which refers to the value assigned to the `ADMIN_KEYS` argument inserted into a
+builder value. The `scabbard_admin_keys` key’s value is `[“$(admin_keys)”]`,
+which refers to the value assigned to the `admin_keys` argument inserted into a
 list. Similarly, the `alias` key would be assigned the value assigned to the
-`GAMEROOM_NAME` argument value. This example also shows the `encoding` option,
+`gameroom_name` argument value. This example also shows the `encoding` option,
 which determines the encoding of the metadata being assigned to the builder.
 Currently, the only supported option is JSON.
 
@@ -217,16 +217,16 @@ the template rules and arguments to create the circuit proposal. The following
 example illustrates how to use a simple circuit template to propose a circuit.
 
 Below is an example of a simple circuit template. This template only requires
-the `SIGNER_PUB_KEY` argument and has rules to set the circuit’s management type
+the `signer_pub_key` argument and has rules to set the circuit’s management type
 and services.
 
 ```yaml
 version: v1
 args:
-    - name: NODES
+    - name: nodes
       required: false
       description: "List of node IDs"
-    - name: SIGNER_PUB_KEY
+    - name: signer_pub_key
       required: true
       description: "Public key of the signer"
 rules:
@@ -237,7 +237,7 @@ rules:
         first-service: ‘AA01’
         service-args:
         - key: 'admin_keys'
-          value: [$(SIGNER_PUB_KEY)]
+          value: [$(signer_pub_key)]
 ```
 
 This template can be specified using the `template` option of the `propose`
@@ -269,7 +269,7 @@ $ splinter circuit propose \
   --node alpha001::tcps://splinterd-node-alpha001:8044 \
   --node beta001::tcps://splinterd-node-beta001:8044 \
   --template simple.yaml \
-  --template-arg SIGNER_PUB_KEY=PRIVATE-KEY-FILE \
+  --template-arg signer_pub_key=PRIVATE-KEY-FILE \
   --url URL-of-splinterd-REST-API
 ```
 
@@ -304,7 +304,7 @@ circuit template file in an application.
    argument is described as follows in the circuit template:
 
     ```yaml
-    name: NODES
+    name: nodes
           required: true
           description: "List of node IDs"
     ```
@@ -316,9 +316,9 @@ circuit template file in an application.
     entry in the circuit template file.
 
     ```yaml
-    name: ADMIN_KEYS
+    name: admin_keys
           required: false
-          default: SIGNER_PUB_KEY
+          default: signer_pub_key
           description: >-
             Public keys used to verify transactions in the scabbard service
     ```
@@ -380,9 +380,9 @@ circuit template file in an application.
         encoding: json
         metadata:
             - key: "scabbard_admin_keys"
-              value: ["$(ADMIN_KEYS)"]
+              value: ["$(admin_keys)"]
             - key: "alias"
-              value: "$(GAMEROOM_NAME)"
+              value: "$(gameroom_name)"
     ```
 
     From the template entry, we can see the encoding for the `metadata` is JSON.
@@ -404,7 +404,7 @@ circuit template file in an application.
 
     This rule includes the `admin_keys` in the `service-args` entry and a
     `peer_services` value. The `peer_services` key has a value,
-    `$(ALL_OTHER_SERVICES)`, meaning this key is assigned the definition of the
+    `$(all_other_services)`, meaning this key is assigned the definition of the
     `peer_services` key.
 
     ```yaml
@@ -412,9 +412,9 @@ circuit template file in an application.
         service-type: 'scabbard'
         service-args:
         - key: 'admin_keys'
-          value: [$(ADMIN_KEYS)]
+          value: [$(admin_keys)]
         - key: 'peer_services'
-          value: '$(ALL_OTHER_SERVICES)'
+          value: '$(all_other_services)'
         first-service: 'a000'
     ```
 
