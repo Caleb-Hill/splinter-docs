@@ -300,7 +300,7 @@ circuit template file in an application.
 
 2. The args of the `CircuitCreateTemplate` object created in the step above
    must be set. Each entry in the args section of the circuit template holds
-   further information on how the argument is used. For example, the `NODES`
+   further information on how the argument is used. For example, the `nodes`
    argument is described as follows in the circuit template:
 
     ```yaml
@@ -309,10 +309,10 @@ circuit template file in an application.
           description: "List of node IDs"
     ```
 
-    This entry shows that the `NODES` argument is required and a short
+    This entry shows that the `nodes` argument is required and a short
     description. Therefore, if this argument is not set in the circuit template,
     the circuit template will not successfully create the builder objects. Some
-    arguments have default values, this is shown in the `ADMIN_KEYS` argument
+    arguments have default values, this is shown in the `admin_keys` argument
     entry in the circuit template file.
 
     ```yaml
