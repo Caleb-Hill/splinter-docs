@@ -243,7 +243,8 @@ rules:
 This template can be specified using the `template` option of the `propose`
 command. The template arguments are set using the corresponding `template-arg`
 option. If any required arguments are not set, the circuit proposal will not be
-created and an error will be returned specifying the missing argument. While the
+created and an error will be returned specifying the missing argument. Template
+args are not case sensitive and are converted to all lowercase. While the
 circuit template will complete the circuit proposal based on its rules and
 arguments, any custom-set arguments using the `propose` command’s other options
 will take precedence over the default template values. Any additional information
